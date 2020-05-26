@@ -6,42 +6,59 @@ class Generator(nn.Module):
         super(Generator, self).__init__()
         
         self.conv = nn.Sequential(
-            # Convolutional Layer: 100x1x1 -> 512x1x2, F=(1,2), S=1, P=0
+            # Up-conv: 100x1x1 -> 512x1x2, F=(1,2), S=1, P=0
             nn.ConvTranspose2d(100, 512, (1, 2), 1, 0, bias=False),
             nn.BatchNorm2d(512),
             nn.ReLU(),
 
-            # Convolutional Layer: 512x1x2 -> 256x2x4, F=4, S=2, P=1
+            # Up-conv: 512x1x2 -> 256x2x4, F=4, S=2, P=1
             nn.ConvTranspose2d(512, 256, 4, 2, 1, bias=False),
             nn.BatchNorm2d(256),
             nn.ReLU(),
 
-            # Convolutional Layer: 256x2x4 -> 128x4x8, F=4, S=2, P=1
+            # Up-conv: 256x2x4 -> 128x4x8, F=4, S=2, P=1
             nn.ConvTranspose2d(256, 128, 4, 2, 1, bias=False),
             nn.BatchNorm2d(128),
             nn.ReLU(),
 
-            # Convolutional Layer: 128x4x8 -> 64x8x16, F=4, S=2, P=1
+            # Up-conv: 128x4x8 -> 64x8x16, F=4, S=2, P=1
             nn.ConvTranspose2d(128, 64, 4, 2, 1, bias=False),
             nn.BatchNorm2d(64),
             nn.ReLU(),
 
-            # Convolutional Layer: 64x8x16 -> 32x16x32, F=4, S=2, P=1
+
+            # Forward-conv: 64x8x16 -> 64x8x16, F=3, S=1, P=1
+            nn.ConvTranspose2d(64, 64, 3, 1, 1, bias=False),
+            nn.BatchNorm2d(64),
+            nn.ReLU(),
+
+            # Forward-conv: 64x8x16 -> 64x8x16, F=3, S=1, P=1
+            nn.ConvTranspose2d(64, 64, 3, 1, 1, bias=False),
+            nn.BatchNorm2d(64),
+            nn.ReLU(),
+
+            # Forward-conv: 64x8x16 -> 64x8x16, F=3, S=1, P=1
+            nn.ConvTranspose2d(64, 64, 3, 1, 1, bias=False),
+            nn.BatchNorm2d(64),
+            nn.ReLU(),
+
+
+            # Up-conv: 64x8x16 -> 32x16x32, F=4, S=2, P=1
             nn.ConvTranspose2d(64, 32, 4, 2, 1, bias=False),
             nn.BatchNorm2d(32),
             nn.ReLU(),
 
-            # Convolutional Layer: 32x8x16 -> 16x32x64, F=4, S=2, P=1
+            # Up-conv: 32x8x16 -> 16x32x64, F=4, S=2, P=1
             nn.ConvTranspose2d(32, 16, 4, 2, 1, bias=False),
             nn.BatchNorm2d(16),
             nn.ReLU(),
 
-            # Convolutional Layer: 16x32x64 -> 8x64x128, F=4, S=2, P=1
+            # Up-conv: 16x32x64 -> 8x64x128, F=4, S=2, P=1
             nn.ConvTranspose2d(16, 8, 4, 2, 1, bias=False),
             nn.BatchNorm2d(8),
             nn.ReLU(),
 
-            # Convolutional Layer: 8x64x128 -> 4x128x256, F=4, S=2, P=1
+            # Up-conv: 8x64x128 -> 4x128x256, F=4, S=2, P=1
             nn.ConvTranspose2d(8, 4, 4, 2, 1, bias=False)
             # Removed sigmoid for now
         )
@@ -56,41 +73,41 @@ class Discriminator(nn.Module):
     def __init__(self):
         super(Discriminator, self).__init__()
         self.conv = nn.Sequential(
-            # Convolutional Layer: 4x128x256 -> 8x64x128, F=4, S=2, P=1
+            # Down-conv: 4x128x256 -> 8x64x128, F=4, S=2, P=1
             nn.Conv2d(4, 8, 4, 2, 1, bias=False),
             nn.LeakyReLU(),
 
-            # Convolutional Layer: 8x64x128 -> 16x32x64, F=4, S=2, P=1
+            # Down-conv: 8x64x128 -> 16x32x64, F=4, S=2, P=1
             nn.Conv2d(8, 16, 4, 2, 1, bias=False),
             nn.BatchNorm2d(16),
             nn.LeakyReLU(),
 
-            # Convolutional Layer: 16x32x64 -> 32x16x32, F=4, S=2, P=1
+            # Down-conv: 16x32x64 -> 32x16x32, F=4, S=2, P=1
             nn.Conv2d(16, 32, 4, 2, 1, bias=False),
             nn.BatchNorm2d(32),
             nn.LeakyReLU(),
 
-            # Convolutional Layer: 32x16x32 -> 64x8x16, F=4, S=2, P=1
+            # Down-conv: 32x16x32 -> 64x8x16, F=4, S=2, P=1
             nn.Conv2d(32, 64, 4, 2, 1, bias=False),
             nn.BatchNorm2d(64),
             nn.LeakyReLU(),
 
-            # Convolutional Layer: 64x8x16 -> 128x4x8, F=4, S=2, P=1
+            # Down-conv: 64x8x16 -> 128x4x8, F=4, S=2, P=1
             nn.Conv2d(64, 128, 4, 2, 1, bias=False),
             nn.BatchNorm2d(128),
             nn.LeakyReLU(),
 
-            # Convolutional Layer: 128x4x8 -> 256x2x4, F=4, S=2, P=1
+            # Down-conv: 128x4x8 -> 256x2x4, F=4, S=2, P=1
             nn.Conv2d(128, 256, 4, 2, 1, bias=False),
             nn.BatchNorm2d(256),
             nn.LeakyReLU(),
 
-            # Convolutional Layer: 256x2x4 -> 512x1x2, F=4, S=2, P=1
+            # Down-conv: 256x2x4 -> 512x1x2, F=4, S=2, P=1
             nn.Conv2d(256, 512, 4, 2, 1, bias=False),
             nn.BatchNorm2d(512),
             nn.LeakyReLU(),
 
-            # Convolutional Layer: 512x1x2 -> 1x1x1, F=(1,2), S=1, P=0
+            # Down-conv: 512x1x2 -> 1x1x1, F=(1,2), S=1, P=0
             nn.Conv2d(512, 1, (1, 2), 1, 0, bias=False),
             nn.Sigmoid()
         )
