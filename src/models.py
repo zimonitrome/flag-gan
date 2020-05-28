@@ -27,20 +27,20 @@ class Generator(nn.Module):
             nn.ReLU(),
 
 
-            # Forward-conv: 64x8x16 -> 64x8x16, F=3, S=1, P=1
-            nn.ConvTranspose2d(64, 64, 3, 1, 1, bias=False),
-            nn.BatchNorm2d(64),
-            nn.ReLU(),
+#             # Forward-conv: 64x8x16 -> 64x8x16, F=3, S=1, P=1
+#             nn.ConvTranspose2d(64, 64, 3, 1, 1, bias=False),
+#             nn.BatchNorm2d(64),
+#             nn.ReLU(),
 
             # Forward-conv: 64x8x16 -> 64x8x16, F=3, S=1, P=1
             nn.ConvTranspose2d(64, 64, 3, 1, 1, bias=False),
             nn.BatchNorm2d(64),
             nn.ReLU(),
 
-            # Forward-conv: 64x8x16 -> 64x8x16, F=3, S=1, P=1
-            nn.ConvTranspose2d(64, 64, 3, 1, 1, bias=False),
-            nn.BatchNorm2d(64),
-            nn.ReLU(),
+#             # Forward-conv: 64x8x16 -> 64x8x16, F=3, S=1, P=1
+#             nn.ConvTranspose2d(64, 64, 3, 1, 1, bias=False),
+#             nn.BatchNorm2d(64),
+#             nn.ReLU(),
 
 
             # Up-conv: 64x8x16 -> 32x16x32, F=4, S=2, P=1
@@ -59,8 +59,8 @@ class Generator(nn.Module):
             nn.ReLU(),
 
             # Up-conv: 8x64x128 -> 4x128x256, F=4, S=2, P=1
-            nn.ConvTranspose2d(8, 4, 4, 2, 1, bias=False)
-            # Removed sigmoid for now
+            nn.ConvTranspose2d(8, 4, 4, 2, 1, bias=False),
+            nn.Sigmoid()
         )
             
     def forward(self, x):
