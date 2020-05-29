@@ -58,8 +58,8 @@ class Generator(nn.Module):
             nn.BatchNorm2d(8),
             nn.ReLU(),
 
-            # Up-conv: 8x64x128 -> 4x128x256, F=4, S=2, P=1
-            nn.ConvTranspose2d(8, 4, 4, 2, 1, bias=False),
+            # Up-conv: 8x64x128 -> 3x128x256, F=4, S=2, P=1
+            nn.ConvTranspose2d(8, 3, 4, 2, 1, bias=False),
             nn.Sigmoid()
         )
             
@@ -73,8 +73,8 @@ class Discriminator(nn.Module):
     def __init__(self):
         super(Discriminator, self).__init__()
         self.conv = nn.Sequential(
-            # Down-conv: 4x128x256 -> 8x64x128, F=4, S=2, P=1
-            nn.Conv2d(4, 8, 4, 2, 1, bias=False),
+            # Down-conv: 3x128x256 -> 8x64x128, F=4, S=2, P=1
+            nn.Conv2d(3, 8, 4, 2, 1, bias=False),
             nn.LeakyReLU(),
 
             # Down-conv: 8x64x128 -> 16x32x64, F=4, S=2, P=1
